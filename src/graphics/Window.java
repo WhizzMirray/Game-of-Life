@@ -8,15 +8,13 @@ import javax.swing.Box;
 import javax.swing.JFrame;
 import javax.swing.JSlider;
 import javax.swing.JToolBar;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
 import rules.Lifeloop;
 
 @SuppressWarnings("serial")
 public class Window extends JFrame{
 	private Panel panel;
 	private Lifeloop life;
+	private JSlider slider;
 	Window(){
 		panel = new Panel();
 		
@@ -28,16 +26,9 @@ public class Window extends JFrame{
 		tool.add(stop);
 		pause.setEnabled(false);
 		stop.setEnabled(false);
-		JSlider slider = new JSlider(JSlider.HORIZONTAL,0,600,300);
+		slider = new JSlider(JSlider.HORIZONTAL,0,600,300);
 		slider.setValue(60);
-		slider.addChangeListener(new ChangeListener() {
-			
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				life.setSleep(600-slider.getValue());
-				
-			}
-		});
+		slider.addChangeListener(e -> life.setSleep(600-slider.getValue()));
 		tool.add(slider);
 		tool.add(Box.createHorizontalStrut(400));
 		add(panel);
@@ -61,7 +52,9 @@ public class Window extends JFrame{
 			panel.setDraw(false);
 			stop.setEnabled(true);
 			pause.setEnabled(true);
+			start.setEnabled(false);
 			life = new Lifeloop(panel);
+			life.setSleep(600-slider.getValue());
 		
 		}
 	};
@@ -90,7 +83,7 @@ public class Window extends JFrame{
 			panel.setDraw(true);
 			stop.setEnabled(false);
 			pause.setEnabled(false);
-			
+			start.setEnabled(true);
 			life.setRunning(false);
 		}
 	};
